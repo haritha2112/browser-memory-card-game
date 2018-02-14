@@ -21,3 +21,20 @@ function shuffleArray(array) {
 }
 
 shuffleArray(allIcons);
+
+function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+  return div.firstChild;
+}
+
+function addIconsToCard(i) {
+  let tileIcon = "fa fa-"+allIcons[i];
+  let addTileToHtml = "<li class='tile' data-item="+i+"><i class='"+tileIcon+"'></i></li>";
+  const cardId = document.getElementById("outer-card");
+  cardId.appendChild(createElementFromHTML(addTileToHtml));
+}
+
+for(let i=0; i<allIcons.length; i++) {
+  addIconsToCard(i);
+}
