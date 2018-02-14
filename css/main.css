@@ -32,3 +32,30 @@ h1 {
   font-size: 3em;
   font-weight: 100;
 }
+
+.score-panel {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  margin: auto;
+  font-size: 200;
+}
+
+.score-panel .life {
+  list-style: none;
+  display: inline-block;
+  text-align: left;
+}
+
+.score-panel .life li  {
+  display: inline-block;
+}
+
+.score-panel .moves {
+  margin-right: 115px;
+  margin-left: 15px;
+}
+
+.score-panel .restart {
+  display: inline-block;
+}
