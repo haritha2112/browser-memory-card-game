@@ -9,7 +9,19 @@ let icons = [
   "gift"
 ];
 
+let lifeIcons = ["heart", "heart", "heart"];
+
 let allIcons = icons.concat(icons);
+let life = 0;
+let numMistakes = 0;
+let numClicks = 0;
+let score = 0;
+let tileOne = "";
+let tileTwo = "";
+let tileOneClassList;
+let tileOneID;
+let tileTwoID;
+let lifeElementID = document.getElementById("life");
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
