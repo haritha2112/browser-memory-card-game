@@ -41,13 +41,13 @@ h1 {
   font-size: 200;
 }
 
-.score-panel .life {
+.score-panel .star {
   list-style: none;
   display: inline-block;
   text-align: left;
 }
 
-.score-panel .life li  {
+.score-panel .star li  {
   display: inline-block;
 }
 

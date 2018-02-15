@@ -9,10 +9,11 @@ let icons = [
   "gift"
 ];
 
-let lifeIcons = ["heart", "heart", "heart"];
+let starIcons = ["star", "star", "star"];
 
 let allIcons = icons.concat(icons);
-let life = 0;
+let star = 4;
+let movesCount = 3;
 let numMistakes = 0;
 let numClicks = 0;
 let score = 0;
@@ -21,7 +22,7 @@ let tileTwo = "";
 let tileOneClassList;
 let tileOneID;
 let tileTwoID;
-let lifeElementID = document.getElementById("life");
+let starElementID = document.getElementById("star");
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -40,20 +41,15 @@ function createElementFromHTML(htmlString) {
   return div.firstChild;
 }
 
-function addLifeIcon(i) {
-  let lifeIcon = "fa fa-"+lifeIcons[i];
-  let addLifeToHtml = "<li class='life-icon' data-item="+i+"><i class='"+lifeIcon+"'></i></li>";
-  const lifeElement = createElementFromHTML(addLifeToHtml);
-  lifeElementID.appendChild(lifeElement);
+function addStarIcon(i) {
+  let starIcon = "fa fa-"+starIcons[i];
+  let addStarToHtml = "<li class='star-icon' data-item="+i+"><i class='"+starIcon+"'></i></li>";
+  const starElement = createElementFromHTML(addStarToHtml);
+  starElementID.appendChild(starElement);
 }
 
-for(let i=0; i<lifeIcons.length; i++) {
-  addLifeIcon(i);
-}
-
-function loseLife(i) {
-  singleLife = lifeElementID.childern[i];
-  lifeElementID.removeChild(lifeDataItem);
+for(let i=0; i<starIcons.length; i++) {
+  addStarIcon(i);
 }
 
 function respondToClick(event) {
@@ -70,16 +66,22 @@ function respondToClick(event) {
       tileOneClassList.add("match");
       tileClassList.add("match");
       score += 20;
+      console.log("score" +score);
     } else {
       setTimeout(function() {
         tileOneClassList.remove("open");
         tileClassList.remove("open");
       }, 500);
-      if(numMistakes === 2) {
-        life += 1;
+      if(numMistakes === 3) {
+        star -= 1;
+        movesCount -= 1;
+        document.getElementById("moves").innerHTML = movesCount;
+        starElementID.removeChild(starElementID.childNodes[star]);
         numMistakes = 0;
+        console.log("star" + star);
       } else {
         numMistakes += 1;
+        console.log("misaktes" + numMistakes);
       }
     }
     tileOne = "";
