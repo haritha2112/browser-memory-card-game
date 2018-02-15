@@ -66,7 +66,6 @@ function respondToClick(event) {
       tileOneClassList.add("match");
       tileClassList.add("match");
       score += 20;
-      console.log("score" +score);
     } else {
       setTimeout(function() {
         tileOneClassList.remove("open");
@@ -74,14 +73,13 @@ function respondToClick(event) {
       }, 500);
       if(numMistakes === 3) {
         star -= 1;
+        starCount += 1;
         movesCount -= 1;
-        document.getElementById("moves").innerHTML = movesCount;
+        moves.innerHTML = movesCount;
         starElementID.removeChild(starElementID.childNodes[star]);
         numMistakes = 0;
-        console.log("star" + star);
       } else {
-        numMistakes += 1;
-        console.log("misaktes" + numMistakes);
+        numMistakes += 1;      
       }
     }
     tileOne = "";
@@ -103,41 +101,19 @@ for(let i=0; i<allIcons.length; i++) {
   addIconsToCard(i);
 }
 
-
 function restart() {
   let openElements = document.querySelectorAll(".tile");
   [].forEach.call(openElements, function(el) {
     el.classList.remove("match");
     el.classList.remove("open");
   });
+  moves.textContent = "3";
+  if(!(starcount>=3)) {
+    for(let i=starCount; i<3; i++) {
+      addStarIcon(i);
+    }
+  }
+  
   shuffleArray(allIcons);
 }
-
-let restartElement = document.getElementById("restart");
-restartElement.addEventListener('click', restart);
-
-
-/*onClick(event) {
-  if numClicks is even {
-    index = event.target.get("data-index")
-    tile1 = "cat"
-    set class as open
-  } else {
-    tile2 = "dog"
-    set class as open
-    if tile1==tile2 {
-      set both class as match
-      increase points
-    } else {
-      set both class as tile
-      if numMistakes == 2 {
-        decrease life
-        numMistakes = 0
-      } else {
-        numMistakes += 1
-      }
-    }
-    tile1 = tile2 = ""
-  }
-  numClicks += 1
-}*/
+document.getElementById("restart").addEventListener('click', restart);
