@@ -103,6 +103,20 @@ for(let i=0; i<allIcons.length; i++) {
   addIconsToCard(i);
 }
 
+
+function restart() {
+  let openElements = document.querySelectorAll(".tile");
+  [].forEach.call(openElements, function(el) {
+    el.classList.remove("match");
+    el.classList.remove("open");
+  });
+  shuffleArray(allIcons);
+}
+
+let restartElement = document.getElementById("restart");
+restartElement.addEventListener('click', restart);
+
+
 /*onClick(event) {
   if numClicks is even {
     index = event.target.get("data-index")
