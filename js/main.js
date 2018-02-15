@@ -10,18 +10,23 @@ let icons = [
 ];
 
 let starIcons = ["star", "star", "star"];
-
 let allIcons = icons.concat(icons);
+
 let star = 4;
+let starCount = 0;
 let movesCount = 3;
 let numMistakes = 0;
 let numClicks = 0;
 let score = 0;
+
 let tileOne = "";
 let tileTwo = "";
+
 let tileOneClassList;
 let tileOneID;
 let tileTwoID;
+
+let moves = document.getElementById("moves");
 let starElementID = document.getElementById("star");
 
 function shuffleArray(array) {
@@ -108,10 +113,6 @@ function restart() {
     el.classList.remove("open");
   });
   moves.textContent = "3";
-  if(!(starcount>=3)) {
-    for(let i=starCount; i<3; i++) {
-      addStarIcon(i);
-    }
   }
   
   shuffleArray(allIcons);
