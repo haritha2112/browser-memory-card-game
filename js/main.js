@@ -28,6 +28,33 @@ let tileTwoID;
 
 let moves = document.getElementById("moves");
 let starElementID = document.getElementById("star");
+let modal = document.getElementsByClassName("modal")[0];
+let modalContent = document.getElementsByClassName("modal-content")[0];
+let closeModal = document.getElementsByClassName("close")[0];
+let modalMessage = document.getElementsByClassName("message")[0];
+let modalScore = document.getElementsByClassName("score")[0];
+let modalTime = document.getElementsByClassName("time")[0];
+let modalMoveCount = document.getElementsByClassName("move-count")[0];
+
+let minutesLabel = document.getElementById("minutes");
+let secondsLabel = document.getElementById("seconds");
+let totalSeconds = 0;
+setInterval(setTime, 1000);
+
+function setTime() {
+  ++totalSeconds;
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+}
+
+function pad(val) {
+  var valString = val + "";
+  if (valString.length < 2) {
+    return "0" + valString;
+  } else {
+    return valString;
+  }
+}
 
 function shuffleArray(array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -76,13 +103,19 @@ function respondToClick(event) {
         tileOneClassList.remove("open");
         tileClassList.remove("open");
       }, 500);
-      if(numMistakes === 3) {
+      if(numMistakes === 1) {
         star -= 1;
-        starCount += 1;
         movesCount -= 1;
         moves.innerHTML = movesCount;
         starElementID.removeChild(starElementID.childNodes[star]);
         numMistakes = 0;
+        score -= 10;
+        if(star === 0 || movesCount === 0) {
+          modal.style.display="block";
+          modalMessage.textContent = "You lost. :(";
+          modalScore.textContent = "Score: " + score;
+          modalTime.textContent = "Time: "+minutesLabel.innerHTML+":"+secondsLabel.innerHTML;
+        }
       } else {
         numMistakes += 1;      
       }

@@ -33,32 +33,22 @@ h1 {
   font-weight: 100;
 }
 
-.score-panel {
-  width: 100%;
-  display: inline-block;
-  text-align: center;
+table {
+  width: 560px;
+  height: 50px;
+  border: none;
   margin: auto;
-  font-size: 200;
 }
 
-.score-panel .star {
-  list-style: none;
-  display: inline-block;
-  text-align: left;
+td {
+  width: 140px;
+  text-align: center;
 }
 
 .score-panel .star li  {
   display: inline-block;
 }
 
-.score-panel .moves {
-  margin-right: 115px;
-  margin-left: 15px;
-}
-
-.score-panel .restart {
-  display: inline-block;
-}
 
 .card {
   width: 560px;

@@ -14,19 +14,33 @@
       <h1> Memory Game </h1>
     </header>
     <section class="score-panel">
-      <ul class="star" id="star">
-      </ul>
-      <span class="moves" id="moves"> 3 </span>
-      <div class="restart" id="restart">
-        <i class="fa fa-repeat"></i>
-      </div>
+      <table>
+        <tr>
+          <td> 
+            <ul class="star" id="star"></ul>
+          </td>
+          <td>
+            <span class="moves" id="moves"> 3 </span>
+          </td>
+          <td>
+            <div class="restart" id="restart">
+              <i class="fa fa-repeat"></i>
+            </div>
+          </td>
+          <td> <label id="minutes">00</label>:<label id="seconds">00</label> </td>
+        </tr>
+      </table>
     </section>
     <ul class="card" id="outer-card">
     </ul>
     <div class="modal">
+      <span class="close">&times;</span>
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <p> </p>
+        <p class="message"></p>
+        <p class="score"></p>
+        <p class="time"></p>
+        <p class="move-count"></p>
+        <button class="replay" onclick="restart()">Play Again!</button>
       </div>
     </div>
   </div>
