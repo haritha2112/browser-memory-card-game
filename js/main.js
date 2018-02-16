@@ -12,11 +12,10 @@ let icons = [
 let starIcons = ["star", "star", "star"];
 let allIcons = icons.concat(icons);
 
-let star = 4;
-let starCount = 0;
+let star = 3;
 let movesCount = 3;
 let numMistakes = 0;
-let numClicks = 0;
+let numClicks = 0; 
 let score = 0;
 
 let tileOne = "";
@@ -140,14 +139,26 @@ for(let i=0; i<allIcons.length; i++) {
 }
 
 function restart() {
+  moves.innerHTML = "3";
+  shuffleArray(allIcons);
+  modal.style.display="none";
+  totalSeconds = 0;
   let openElements = document.querySelectorAll(".tile");
   [].forEach.call(openElements, function(el) {
     el.classList.remove("match");
     el.classList.remove("open");
   });
-  moves.textContent = "3";
+  if(star !== 3) {
+    for(let i=star; i<3; i++) {
+      addStarIcon(i);
+    }
   }
-  
-  shuffleArray(allIcons);
 }
 document.getElementById("restart").addEventListener('click', restart);
+
+closeModal.addEventListener('click', function(){
+  modal.style.display = "none";
+  restart();
+})
+
+
