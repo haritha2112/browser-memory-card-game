@@ -8,14 +8,14 @@ let icons = [
   "camera-retro",
   "gift"
 ];
+let allIcons = icons.concat(icons);
 
 let starIcons = ["star", "star", "star"];
-let allIcons = icons.concat(icons);
 
 let star = 3;
 let movesCount = 3;
 let numMistakes = 0;
-let numClicks = 0; 
+let numClicks = 0;
 let score = 0;
 
 let tileOne = "";
@@ -38,21 +38,30 @@ let modalMoveCount = document.getElementsByClassName("move-count")[0];
 let minutesLabel = document.getElementById("minutes");
 let secondsLabel = document.getElementById("seconds");
 let totalSeconds = 0;
+
 setInterval(setTime, 1000);
+
+shuffleArray(allIcons);
+
+for(let i=0; i<starIcons.length; i++) {
+  addStarIcon(i);
+}
+
+for(let i=0; i<allIcons.length; i++) {
+  addIconsToCard(i);
+}
+
+document.getElementById("restart").addEventListener('click', restart);
+
+closeModal.addEventListener('click', function() {
+  modal.style.display = "none";
+  restart();
+});
 
 function setTime() {
   ++totalSeconds;
-  secondsLabel.innerHTML = pad(totalSeconds % 60);
-  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-}
-
-function pad(val) {
-  var valString = val + "";
-  if (valString.length < 2) {
-    return "0" + valString;
-  } else {
-    return valString;
-  }
+  secondsLabel.innerHTML = (totalSeconds % 60).toString().padStart(2, "0");
+  minutesLabel.innerHTML = (parseInt(totalSeconds / 60)).toString().padStart(2, "0");
 }
 
 function shuffleArray(array) {
@@ -63,8 +72,6 @@ function shuffleArray(array) {
     array[j] = temp;
   }
 }
-
-shuffleArray(allIcons);
 
 function createElementFromHTML(htmlString) {
   var div = document.createElement('div');
@@ -77,10 +84,6 @@ function addStarIcon(i) {
   let addStarToHtml = "<li class='star-icon' data-item="+i+"><i class='"+starIcon+"'></i></li>";
   const starElement = createElementFromHTML(addStarToHtml);
   starElementID.appendChild(starElement);
-}
-
-for(let i=0; i<starIcons.length; i++) {
-  addStarIcon(i);
 }
 
 function respondToClick(event) {
@@ -116,7 +119,7 @@ function respondToClick(event) {
           modalTime.textContent = "Time: "+minutesLabel.innerHTML+":"+secondsLabel.innerHTML;
         }
       } else {
-        numMistakes += 1;      
+        numMistakes += 1;
       }
     }
     tileOne = "";
@@ -132,10 +135,6 @@ function addIconsToCard(i) {
   const tileElement = createElementFromHTML(addTileToHtml);
   tileElement.addEventListener('click', respondToClick);
   cardId.appendChild(tileElement);
-}
-
-for(let i=0; i<allIcons.length; i++) {
-  addIconsToCard(i);
 }
 
 function restart() {
@@ -154,11 +153,3 @@ function restart() {
     }
   }
 }
-document.getElementById("restart").addEventListener('click', restart);
-
-closeModal.addEventListener('click', function(){
-  modal.style.display = "none";
-  restart();
-})
-
-
