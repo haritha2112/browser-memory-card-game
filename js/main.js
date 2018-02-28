@@ -27,6 +27,7 @@ let secondsLabel = document.getElementById("seconds");
 
 startGame();
 
+// Adding Event Listeners to all required click actions
 document.getElementById("restart").addEventListener('click', restart);
 let closeModal = document.getElementsByClassName("close")[0];
 closeModal.addEventListener('click', function() {
@@ -34,6 +35,7 @@ closeModal.addEventListener('click', function() {
   restart();
 });
 
+ // Upon start of the game, all the required values and actcions are set/initialized.
 function startGame() {
   currentState.timerInterval = setInterval(setTime, 1000);
   shuffleArray(allIcons);
@@ -44,6 +46,7 @@ function startGame() {
   }
 }
 
+// When the player clicks on a tile, this function is triggered
 function respondToClick(event) {
   if (event.target.classList.contains('match')) {
     return;
@@ -63,8 +66,10 @@ function respondToClick(event) {
 }
 
 function updateCurrentState() {
+  // Number of moves made
   const numMovesMade = currentState.numClicks / 2;
   moves.innerHTML = numMovesMade;
+  // Reduce star rating based on number of moves made
   if (numMovesMade <= 12) {
     currentState.stars = 3;
   } else if (numMovesMade > 12 && numMovesMade <= 20) {
@@ -74,12 +79,14 @@ function updateCurrentState() {
   }
   document.getElementById("star").innerHTML = "";
   renderStars();
+  // Matching of two same tiles
   if (currentState.iconOne === currentState.iconTwo && currentState.tileOne !== currentState.tileTwo) {
     currentState.tileOne.classList.add('match');
     currentState.tileTwo.classList.add('match');
   } else {
     closeTilesAfterSomeTime();
   }
+  // Modal to display after game is over
   if(isGameOver()) {
     clearInterval(currentState.timerInterval);
     modal.style.display="block";
