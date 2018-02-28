@@ -7,7 +7,7 @@ The game board consist of sixteen "tiles" arranged in a grid. Eight different pa
 Flip any two hidden cards at one time to find out which ones match. Continue till you match all the eight pairs.
 
 ### Demo
-!(https://github.com/haritha2112/browser-memory-card-game/blob/master/index.html)
+ https://rawgit.com/haritha2112/browser-memory-card-game/blob/master/index.html
 
 ### Tech Stack
 
