@@ -1,4 +1,4 @@
-let icons = [
+const icons = [
   "birthday-cake",
   "paw",
   "magic",
@@ -8,60 +8,107 @@ let icons = [
   "camera-retro",
   "gift"
 ];
+const initialState = {
+  stars: 3,
+  numClicks: 0,
+  tileOne: "",
+  tileTwo: "",
+  iconOne: "",
+  iconTwo: "",
+  totalSeconds: 0
+};
+let currentState = Object.assign({}, initialState);
 let allIcons = icons.concat(icons);
 
-let starIcons = ["star", "star", "star"];
-
-let star = 3;
-let movesCount = 3;
-let numMistakes = 0;
-let numClicks = 0;
-let score = 0;
-
-let tileOne = "";
-let tileTwo = "";
-
-let tileOneClassList;
-let tileOneID;
-let tileTwoID;
-
 let moves = document.getElementById("moves");
-let starElementID = document.getElementById("star");
 let modal = document.getElementsByClassName("modal")[0];
-let modalContent = document.getElementsByClassName("modal-content")[0];
-let closeModal = document.getElementsByClassName("close")[0];
-let modalMessage = document.getElementsByClassName("message")[0];
-let modalScore = document.getElementsByClassName("score")[0];
-let modalTime = document.getElementsByClassName("time")[0];
-let modalMoveCount = document.getElementsByClassName("move-count")[0];
-
 let minutesLabel = document.getElementById("minutes");
 let secondsLabel = document.getElementById("seconds");
-let totalSeconds = 0;
 
-setInterval(setTime, 1000);
-
-shuffleArray(allIcons);
-
-for(let i=0; i<starIcons.length; i++) {
-  addStarIcon(i);
-}
-
-for(let i=0; i<allIcons.length; i++) {
-  addIconsToCard(i);
-}
+startGame();
 
 document.getElementById("restart").addEventListener('click', restart);
-
+let closeModal = document.getElementsByClassName("close")[0];
 closeModal.addEventListener('click', function() {
   modal.style.display = "none";
   restart();
 });
 
-function setTime() {
-  ++totalSeconds;
-  secondsLabel.innerHTML = (totalSeconds % 60).toString().padStart(2, "0");
-  minutesLabel.innerHTML = (parseInt(totalSeconds / 60)).toString().padStart(2, "0");
+function startGame() {
+  currentState.timerInterval = setInterval(setTime, 1000);
+  shuffleArray(allIcons);
+  moves.innerHTML = currentState.numClicks / 2;
+  renderStars();
+  for(let i=0; i<allIcons.length; i++) {
+    addIconsToCard(i);
+  }
+}
+
+function respondToClick(event) {
+  if (event.target.classList.contains('match')) {
+    return;
+  }
+  ++currentState.numClicks;
+  let tileItemNum = event.target.getAttribute('data-item');
+  if (currentState.numClicks % 2 == 1) {
+    currentState.tileOne = event.target;
+    currentState.iconOne = allIcons[tileItemNum];
+    currentState.tileOne.classList.add('open');
+  } else {
+    currentState.tileTwo = event.target;
+    currentState.iconTwo = allIcons[tileItemNum];
+    currentState.tileTwo.classList.add('open');
+    updateCurrentState();
+  }
+}
+
+function updateCurrentState() {
+  const numMovesMade = currentState.numClicks / 2;
+  moves.innerHTML = numMovesMade;
+  if (numMovesMade <= 12) {
+    currentState.stars = 3;
+  } else if (numMovesMade > 12 && numMovesMade <= 20) {
+    currentState.stars = 2;
+  } else {
+    currentState.stars = 1;
+  }
+  document.getElementById("star").innerHTML = "";
+  renderStars();
+  if (currentState.iconOne === currentState.iconTwo && currentState.tileOne !== currentState.tileTwo) {
+    currentState.tileOne.classList.add('match');
+    currentState.tileTwo.classList.add('match');
+  } else {
+    closeTilesAfterSomeTime();
+  }
+  if(isGameOver()) {
+    clearInterval(currentState.timerInterval);
+    modal.style.display="block";
+    document.getElementById('message').textContent = "Congragulations!";
+    document.getElementById('move-count').textContent = "Moves made: " + (currentState.numClicks / 2);
+    document.getElementById('star-rating').textContent = "Stars earned: " + currentState.stars;
+    document.getElementById('time').textContent = "Time taken: "+minutesLabel.innerHTML+":"+secondsLabel.innerHTML;
+  }
+}
+
+function isGameOver() {
+  return document.getElementsByClassName('match').length === allIcons.length;
+}
+
+function closeTilesAfterSomeTime() {
+  setTimeout(function() {
+    currentState.tileOne.classList.remove("open");
+    currentState.tileTwo.classList.remove("open");
+  }, 250);
+}
+
+function restart() {
+  clearInterval(currentState.timerInterval);
+  currentState = Object.assign({}, initialState);
+  modal.style.display="none";
+  document.getElementById("outer-card").innerHTML = "";
+  document.getElementById("star").innerHTML = "";
+  moves.innerHTML = "";
+  startGame();
 }
 
 function shuffleArray(array) {
@@ -73,59 +120,19 @@ function shuffleArray(array) {
   }
 }
 
-function createElementFromHTML(htmlString) {
-  var div = document.createElement('div');
-  div.innerHTML = htmlString.trim();
-  return div.firstChild;
+function setTime() {
+  ++currentState.totalSeconds;
+  secondsLabel.innerHTML = (currentState.totalSeconds % 60).toString().padStart(2, "0");
+  minutesLabel.innerHTML = (parseInt(currentState.totalSeconds / 60)).toString().padStart(2, "0");
 }
 
-function addStarIcon(i) {
-  let starIcon = "fa fa-"+starIcons[i];
-  let addStarToHtml = "<li class='star-icon' data-item="+i+"><i class='"+starIcon+"'></i></li>";
-  const starElement = createElementFromHTML(addStarToHtml);
-  starElementID.appendChild(starElement);
-}
-
-function respondToClick(event) {
-  let tileClassList = event.target.classList;
-  let tileItemNum = event.target.getAttribute('data-item');
-  if(numClicks % 2 === 0) {
-    tileOneClassList = tileClassList;
-    tileOne = allIcons[tileItemNum];
-    tileOneClassList.add('open');
-  } else {
-    tileTwo = allIcons[tileItemNum];
-    tileClassList.add('open');
-    if(tileOne === tileTwo) {
-      tileOneClassList.add("match");
-      tileClassList.add("match");
-      score += 20;
-    } else {
-      setTimeout(function() {
-        tileOneClassList.remove("open");
-        tileClassList.remove("open");
-      }, 500);
-      if(numMistakes === 1) {
-        star -= 1;
-        movesCount -= 1;
-        moves.innerHTML = movesCount;
-        starElementID.removeChild(starElementID.childNodes[star]);
-        numMistakes = 0;
-        score -= 10;
-        if(star === 0 || movesCount === 0) {
-          modal.style.display="block";
-          modalMessage.textContent = "You lost. :(";
-          modalScore.textContent = "Score: " + score;
-          modalTime.textContent = "Time: "+minutesLabel.innerHTML+":"+secondsLabel.innerHTML;
-        }
-      } else {
-        numMistakes += 1;
-      }
-    }
-    tileOne = "";
-    tileTwo = "";
+function renderStars() {
+  for(let i=0; i<currentState.stars; i++) {
+    let starIcon = "fa fa-star";
+    let addStarToHtml = "<li class='star-icon'><i class='"+starIcon+"'></i></li>";
+    const starElement = createElementFromHTML(addStarToHtml);
+    document.getElementById("star").appendChild(starElement);
   }
-  numClicks += 1;
 }
 
 function addIconsToCard(i) {
@@ -137,19 +144,8 @@ function addIconsToCard(i) {
   cardId.appendChild(tileElement);
 }
 
-function restart() {
-  moves.innerHTML = "3";
-  shuffleArray(allIcons);
-  modal.style.display="none";
-  totalSeconds = 0;
-  let openElements = document.querySelectorAll(".tile");
-  [].forEach.call(openElements, function(el) {
-    el.classList.remove("match");
-    el.classList.remove("open");
-  });
-  if(star !== 3) {
-    for(let i=star; i<3; i++) {
-      addStarIcon(i);
-    }
-  }
+function createElementFromHTML(htmlString) {
+  var div = document.createElement('div');
+  div.innerHTML = htmlString.trim();
+  return div.firstChild;
 }
