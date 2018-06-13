@@ -1,10 +1,10 @@
 # Memory Game
 
 ### About
-The game board consist of sixteen "tiles" arranged in a grid. Eight different pair of tiles consititues these sixteen tiles, each with different symobols on one side. These tiles are shuffled randomly and flipped down when the game starts. 
+The game board consists of sixteen "tiles" arranged in a grid. Eight different pairs of tiles constitute these sixteen tiles, each with different symbols on one side. These tiles are shuffled randomly and flipped down when the game starts. 
 
 ### Game Rule
-Flip any two hidden cards at one time to find out which ones match. Continue till you match all the eight pairs.
+Flip any two hidden cards at one time to find out which ones match. Continue until you match all the eight pairs.
 
 ### Demo
  https://rawgit.com/haritha2112/browser-memory-card-game/master/index.html
